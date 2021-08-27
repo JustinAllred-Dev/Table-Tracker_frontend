@@ -16,21 +16,26 @@ function NewReservation() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await createReservation(reservation);
-    history.push(`/dashboard/?date=${reservation.reservation_date}`);
+    history.push(`/dashboard?date=${reservation.reservation_date}`);
   };
 
-  const handleChange = ({ target }) => {
+  const handleChange = ({ target: { name, value } }) => {
+    if (name === "people") {
+      value = Number(value);
+    }
     setReservation((thisReservation) => ({
       ...thisReservation,
-      [target.name]: target.value,
+      [name]: value,
     }));
   };
+
   return (
     <>
       <ReservationForm
         reservation={reservation}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        history={history}
       />
     </>
   );

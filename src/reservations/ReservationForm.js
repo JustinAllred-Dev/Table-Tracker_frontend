@@ -1,7 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-function ReservationForm({ reservation, handleChange, handleSubmit }) {
+function ReservationForm({ reservation, handleChange, handleSubmit, history }) {
   return (
     <form onSubmit={handleSubmit}>
       <div classname="form-group">
@@ -92,11 +91,11 @@ function ReservationForm({ reservation, handleChange, handleSubmit }) {
           onChange={handleChange}
         />
       </div>
-      <Link className="btn btn-secondary mr-2" to="/">
-        Cancel
-      </Link>
+      <button className="btn btn-danger" onClick={history.goBack}>
+        cancel
+      </button>
       <button className="btn btn-primary" type="submit">
-        Submit
+        submit
       </button>
     </form>
   );
