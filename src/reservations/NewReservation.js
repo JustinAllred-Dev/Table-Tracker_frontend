@@ -5,6 +5,7 @@ import ReservationForm from "./ReservationForm";
 
 function NewReservation() {
   const history = useHistory();
+  const [reservationError, setReservationError] = useState({ message: [] });
   const [reservation, setReservation] = useState({
     first_name: "",
     last_name: "",
@@ -13,10 +14,19 @@ function NewReservation() {
     reservation_time: "",
     people: "",
   });
+
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    await createReservation(reservation);
-    history.push(`/dashboard?date=${reservation.reservation_date}`);
+    try {
+      event.preventDefault();
+      await createReservation(reservation);
+      history.push(`/dashboard?date=${reservation.reservation_date}`);
+    } catch (err) {
+      if (Array.isArray(err.message)) {
+        setReservationError(err);
+      } else {
+        setReservationError({ message: [err.message] });
+      }
+    }
   };
 
   const handleChange = ({ target: { name, value } }) => {
@@ -36,6 +46,7 @@ function NewReservation() {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         history={history}
+        reservationError={reservationError}
       />
     </>
   );

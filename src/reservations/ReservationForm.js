@@ -1,8 +1,20 @@
 import React from "react";
 
-function ReservationForm({ reservation, handleChange, handleSubmit, history }) {
+function ReservationForm({
+  reservation,
+  handleChange,
+  handleSubmit,
+  history,
+  reservationError,
+}) {
   return (
     <form onSubmit={handleSubmit}>
+      {reservationError &&
+        reservationError.message.map((err, i) => (
+          <p key={i} className="alert alert-danger">
+            -{err}
+          </p>
+        ))}
       <div classname="form-group">
         <label htmlFor="first_name" className="form-label">
           First Name:{" "}
