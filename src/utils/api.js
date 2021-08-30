@@ -87,7 +87,14 @@ export async function listTables(signal) {
 }
 
 export async function createTable(table) {
-  return await axios.post(`${API_BASE_URL}/tables`, table);
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: table }),
+    signal,
+  };
+  return await fetchJson(url, options);
 }
 
 export async function updateTable(table_id, reservation_id) {
