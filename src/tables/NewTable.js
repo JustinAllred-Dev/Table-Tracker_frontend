@@ -17,11 +17,18 @@ function NewTable() {
       await createTable(table);
       history.push("/");
     } catch (err) {
-      setTableError(err);
+      if (Array.isArray(err.message)) {
+        setTableError(err);
+      } else {
+        setTableError({ message: [err.message] });
+      }
     }
   };
 
   const handleChange = ({ target: { name, value } }) => {
+    if (name === "capacity") {
+      value = Number(value);
+    }
     setTable((thisTable) => ({
       ...thisTable,
       [name]: value,

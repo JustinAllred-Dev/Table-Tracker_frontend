@@ -1,5 +1,5 @@
 import React from "react";
-
+import ErrorAlert from "../layout/ErrorAlert";
 function ReservationForm({
   reservation,
   handleChange,
@@ -9,12 +9,7 @@ function ReservationForm({
 }) {
   return (
     <form onSubmit={handleSubmit}>
-      {reservationError &&
-        reservationError.message.map((err, i) => (
-          <p key={i} className="alert alert-danger">
-            -{err}
-          </p>
-        ))}
+      <ErrorAlert error={reservationError} />
       <div classname="form-group">
         <label htmlFor="first_name" className="form-label">
           First Name:{" "}

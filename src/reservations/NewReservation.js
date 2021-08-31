@@ -5,7 +5,7 @@ import ReservationForm from "./ReservationForm";
 
 function NewReservation() {
   const history = useHistory();
-  const [reservationError, setReservationError] = useState({ message: [] });
+  const [reservationError, setReservationError] = useState(null);
   const [reservation, setReservation] = useState({
     first_name: "",
     last_name: "",
@@ -21,11 +21,7 @@ function NewReservation() {
       await createReservation(reservation);
       history.push(`/dashboard?date=${reservation.reservation_date}`);
     } catch (err) {
-      if (Array.isArray(err.message)) {
-        setReservationError(err);
-      } else {
-        setReservationError({ message: [err.message] });
-      }
+      setReservationError(err);
     }
   };
 
