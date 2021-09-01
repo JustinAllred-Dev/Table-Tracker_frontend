@@ -97,10 +97,17 @@ export async function createTable(table, signal) {
   return await fetchJson(url, options);
 }
 
-export async function updateTable(table_id, reservation_id) {
-  return await axios.put(
-    `${API_BASE_URL}/tables/${table_id}/seat`,
-    reservation_id
+export async function updateTable(table_id, reservation_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  return await fetchJson(
+    url,
+    {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({ data: { reservation_id } }),
+      signal,
+    },
+    []
   );
 }
 
