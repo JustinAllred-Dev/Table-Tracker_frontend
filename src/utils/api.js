@@ -113,9 +113,16 @@ export async function readReservation(id) {
   return data.data;
 }
 
-export async function clearTable(id) {
-  const { data } = await axios.delete(`${API_BASE_URL}/tables/${id}/seat`);
-  return data.data;
+export async function clearTable(tableId) {
+  const url = `${API_BASE_URL}/tables/${tableId}/seat`;
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({
+      data: {},
+    }),
+  };
+  return await fetchJson(url, options);
 }
 
 export async function updateStatus(id, status) {

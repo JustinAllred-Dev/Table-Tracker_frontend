@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
-import { listTables } from "../utils/api";
+import { listTables, clearTable } from "../utils/api";
 
 function Tables() {
   const [tables, setTables] = useState([]);
@@ -21,18 +21,55 @@ function Tables() {
     loadTables();
   }, []);
 
+  const handleFinish = async (i) => {
+    if (
+      window.confirm(
+        "Is this table ready to seat new guests? \n \n \nThis cannot be undone."
+      )
+    ) {
+      try {
+        await clearTable(tables[i].table_id);
+        window.location.reload();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
   const tableContent = tables.map((table, i) => (
-    <div key={i} className="d-flex">
-      <div className="col-2">
-        <p>{table.table_name}</p>
-      </div>
-      <div className="col-2">
-        <p>{table.capacity}</p>
-      </div>
-      <div className="col-2" data-table-id-status={table.table_id}>
-        {table.occupied ? <p>occupied</p> : <p>free</p>}
-      </div>
-    </div>
+    <>
+      {table.occupied ? (
+        <div key={i} className="d-flex">
+          <div className="col-2">
+            <p>{table.table_name}</p>
+          </div>
+          <div className="col-2">
+            <p>{table.capacity}</p>
+          </div>
+          <div className="col-2" data-table-id-status={table.table_id}>
+            <p>occupied</p>
+          </div>
+          <button
+            data-table-id-finish={table.table_id}
+            onClick={() => handleFinish(i)}
+          >
+            finish
+          </button>
+        </div>
+      ) : (
+        <div key={i} className="d-flex">
+          <div className="col-2">
+            <p>{table.table_name}</p>
+          </div>
+          <div className="col-2">
+            <p>{table.capacity}</p>
+          </div>
+          <div className="col-2" data-table-id-status={table.table_id}>
+            <p>free</p>
+          </div>
+        </div>
+      )}
+    </>
   ));
 
   return (
@@ -50,7 +87,6 @@ function Tables() {
         </div>
       </div>
       <div>{tableContent}</div>
-      {/* {JSON.stringify(reservations)} */}
     </>
   );
 }
