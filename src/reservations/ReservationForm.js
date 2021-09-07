@@ -98,7 +98,7 @@ function ReservationForm({
           onChange={handleChange}
         />
       </div>
-      <button className="btn btn-danger" onClick={history.goBack}>
+      <button className="btn btn-danger" type="button" onClick={history.goBack}>
         cancel
       </button>
       <button className="btn btn-primary" type="submit">

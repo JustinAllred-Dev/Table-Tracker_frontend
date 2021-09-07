@@ -1,13 +1,6 @@
 import React from "react";
 
-function SeatForm({
-  handleChange,
-  handleSubmit,
-  tables,
-  seatTableError,
-  tablesError,
-  history,
-}) {
+function SeatForm({ handleChange, handleSubmit, tables, history }) {
   const options = tables.map((table, id) => (
     <option value={table.table_id} key={id}>
       {`${table.table_name} - ${table.capacity}`}
@@ -25,15 +18,15 @@ function SeatForm({
           {options}
         </select>
         <br />
-        <button type="submit" className="btn btn-primary btn-sm">
-          Submit
-        </button>
         <button
           type="button"
           className="btn btn-danger btn-sm"
           onClick={history.goBack}
         >
           Cancel
+        </button>
+        <button type="submit" className="btn btn-primary btn-sm">
+          Submit
         </button>
       </div>
     </form>

@@ -7,48 +7,40 @@ import SeatForm from "./SeatForm";
 function NewSeat() {
   const history = useHistory();
   const params = useParams();
-  const resId = Number(params.reservationId);
+  const resId = params.reservation_id;
 
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
-  const [seatTable, setSeatTable] = useState(null);
+  const [seatTable, setSeatTable] = useState({ table_id: null });
   const [seatTableError, setSeatTableError] = useState(null);
 
-  const loadTables = async () => {
-    const abortController = new AbortController();
-    setTablesError(null);
-    try {
-      const loadedTables = await listTables(abortController.signal);
-      setTables(loadedTables);
-    } catch (err) {
-      setTablesError(err);
-    }
-    return () => abortController.abort();
-  };
-
-  useEffect(loadTables, []);
+  useEffect(() => {
+    const loadTables = async () => {
+      const abortController = new AbortController();
+      try {
+        setTablesError(null);
+        const loadedTables = await listTables(abortController.signal);
+        setTables(loadedTables);
+      } catch (err) {
+        setTablesError(err);
+      }
+      return () => abortController.abort();
+    };
+    loadTables();
+  }, []);
 
   const handleSubmit = async (event) => {
-    const abortController = new AbortController();
     try {
       event.preventDefault();
-      await updateTable(
-        Number(seatTable.table_id),
-        resId,
-        abortController.signal
-      );
+      await updateTable(seatTable.table_id, resId);
       history.push("/");
     } catch (err) {
       setSeatTableError(err);
     }
-    return () => abortController.abort();
   };
 
-  const handleChange = ({ target: { name, value } }) => {
-    setSeatTable((thisTable) => ({
-      ...thisTable,
-      [name]: value,
-    }));
+  const handleChange = ({ target: { value } }) => {
+    setSeatTable({ table_id: value });
   };
 
   return (

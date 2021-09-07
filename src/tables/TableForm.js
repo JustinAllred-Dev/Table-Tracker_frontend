@@ -1,12 +1,6 @@
-function TableForm({ table, handleChange, handleSubmit, history, tableError }) {
+function TableForm({ table, handleChange, handleSubmit, history }) {
   return (
     <form onSubmit={handleSubmit}>
-      {tableError &&
-        tableError.message.map((err, i) => (
-          <p key={i} className="alert alert-danger">
-            -{err}
-          </p>
-        ))}
       <div classname="form-group">
         <label htmlFor="table_name" className="form-label">
           Table Name:{" "}
@@ -36,7 +30,7 @@ function TableForm({ table, handleChange, handleSubmit, history, tableError }) {
           onChange={handleChange}
         />
       </div>
-      <button className="btn btn-danger" onClick={history.goBack}>
+      <button className="btn btn-danger" type="button" onClick={history.goBack}>
         cancel
       </button>
       <button className="btn btn-primary" type="submit">

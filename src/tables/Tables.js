@@ -6,19 +6,20 @@ function Tables() {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
 
-  const loadTables = async () => {
-    const abortController = new AbortController();
-    setTablesError(null);
-    try {
-      const loadedTables = await listTables(abortController.signal);
-      setTables(loadedTables);
-    } catch (err) {
-      setTablesError(err);
-    }
-    return () => abortController.abort();
-  };
-
-  useEffect(loadTables);
+  useEffect(() => {
+    const loadTables = async () => {
+      const abortController = new AbortController();
+      setTablesError(null);
+      try {
+        const loadedTables = await listTables(abortController.signal);
+        setTables(loadedTables);
+      } catch (err) {
+        setTablesError(err);
+      }
+      return () => abortController.abort();
+    };
+    loadTables();
+  }, []);
 
   const tableContent = tables.map((table, i) => (
     <div key={i} className="d-flex">
@@ -28,8 +29,8 @@ function Tables() {
       <div className="col-2">
         <p>{table.capacity}</p>
       </div>
-      <div className="col-2">
-        <p>occupied?</p>
+      <div className="col-2" data-table-id-status={table.table_id}>
+        {table.occupied ? <p>occupied</p> : <p>free</p>}
       </div>
     </div>
   ));

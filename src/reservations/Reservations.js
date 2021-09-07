@@ -6,49 +6,47 @@ function Reservations({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  const loadReservations = async () => {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    try {
-      const loadedReservations = await listReservations(
-        { date },
-        abortController.signal
-      );
-      setReservations(loadedReservations);
-    } catch (err) {
-      setReservationsError(err);
-    }
-    return () => abortController.abort();
-  };
-
-  useEffect(loadReservations, [date]);
+  useEffect(() => {
+    const loadReservations = async () => {
+      const abortController = new AbortController();
+      setReservationsError(null);
+      try {
+        const loadedReservations = await listReservations(
+          { date },
+          abortController.signal
+        );
+        setReservations(loadedReservations);
+      } catch (err) {
+        setReservationsError(err);
+      }
+      return () => abortController.abort();
+    };
+    loadReservations();
+  }, [date]);
 
   const reservationContent = reservations.map((res, i) => (
-    <>
-      <div key={i} className="d-flex">
-        <div className="col-2 ">
-          <p>{res.first_name}</p>
-        </div>
-        <div className="col-2">
-          <p>{res.last_name}</p>
-        </div>
-        <div className="col-2">
-          <p>{res.mobile_number}</p>
-        </div>
-        <div className="col-2">
-          <p>{res.reservation_time}</p>
-        </div>
-        <div className="col-2">
-          <p>{res.people}</p>
-        </div>
-        <button className="btn btn-sm">
-          <a href={`/reservations/${reservations[i].reservation_id}/seat`}>
-            Seat
-          </a>
-        </button>
+    <div key={i} className="d-flex">
+      <div className="col-2 ">
+        <p>{res.first_name}</p>
       </div>
-      <br></br>
-    </>
+      <div className="col-2">
+        <p>{res.last_name}</p>
+      </div>
+      <div className="col-2">
+        <p>{res.mobile_number}</p>
+      </div>
+      <div className="col-2">
+        <p>{res.reservation_time}</p>
+      </div>
+      <div className="col-2">
+        <p>{res.people}</p>
+      </div>
+      <button className="btn btn-sm">
+        <a href={`/reservations/${reservations[i].reservation_id}/seat`}>
+          Seat
+        </a>
+      </button>
+    </div>
   ));
 
   return (
