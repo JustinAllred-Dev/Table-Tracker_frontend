@@ -21,51 +21,49 @@ function Tables() {
     loadTables();
   }, []);
 
-  const handleFinish = async (i) => {
-    if (
-      window.confirm(
-        "Is this table ready to seat new guests? \n \n \nThis cannot be undone."
-      )
-    ) {
+  const handleFinish = async (tableId) => {
+    if (window.confirm("Is this table ready to seat new guests?")) {
       try {
-        await clearTable(tables[i].table_id);
+        await clearTable(tableId);
         window.location.reload();
       } catch (err) {
-        console.error(err);
+        setTablesError(err);
       }
     }
   };
 
-  const tableContent = tables.map((table, i) => (
+  const tableContent = tables.map((table) => (
     <>
-      {table.occupied ? (
-        <div key={i} className="d-flex">
+      {/* {console.log(table, table.table_id)} */}
+      {table.reservation_id ? (
+        <div key={table.table_id} className="d-flex">
           <div className="col-2">
             <p>{table.table_name}</p>
           </div>
           <div className="col-2">
             <p>{table.capacity}</p>
           </div>
-          <div className="col-2" data-table-id-status={table.table_id}>
-            <p>occupied</p>
+          <div className="col-2">
+            <h6 data-table-id-status={table.table_id}>occupied</h6>
           </div>
           <button
+            className="btn btn-primary btn-sm"
             data-table-id-finish={table.table_id}
-            onClick={() => handleFinish(i)}
+            onClick={() => handleFinish(table.table_id)}
           >
-            finish
+            Finish
           </button>
         </div>
       ) : (
-        <div key={i} className="d-flex">
+        <div key={table.table_id} className="d-flex">
           <div className="col-2">
             <p>{table.table_name}</p>
           </div>
           <div className="col-2">
             <p>{table.capacity}</p>
           </div>
-          <div className="col-2" data-table-id-status={table.table_id}>
-            <p>free</p>
+          <div className="col-2">
+            <h6 data-table-id-status={table.table_id}>free</h6>
           </div>
         </div>
       )}
@@ -73,7 +71,7 @@ function Tables() {
   ));
 
   return (
-    <>
+    <main>
       <ErrorAlert error={tablesError} />
       <div className="d-flex">
         <div className="col-2">
@@ -87,7 +85,7 @@ function Tables() {
         </div>
       </div>
       <div>{tableContent}</div>
-    </>
+    </main>
   );
 }
 

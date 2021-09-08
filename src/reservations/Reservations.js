@@ -25,7 +25,7 @@ function Reservations({ date }) {
   }, [date]);
 
   const reservationContent = reservations.map((res, i) => (
-    <div key={i} className="d-flex">
+    <div key={res.reservation_id} className="d-flex">
       <div className="col-2 ">
         <p>{res.first_name}</p>
       </div>
@@ -41,7 +41,7 @@ function Reservations({ date }) {
       <div className="col-2">
         <p>{res.people}</p>
       </div>
-      <button className="btn btn-sm">
+      <button className="btn btn-primary btn-sm">
         <a href={`/reservations/${reservations[i].reservation_id}/seat`}>
           Seat
         </a>
