@@ -24,29 +24,52 @@ function Reservations({ date }) {
     loadReservations();
   }, [date]);
 
-  const reservationContent = reservations.map((res, i) => (
-    <div key={res.reservation_id} className="d-flex">
-      <div className="col-2 ">
-        <p>{res.first_name}</p>
-      </div>
-      <div className="col-2">
-        <p>{res.last_name}</p>
-      </div>
-      <div className="col-2">
-        <p>{res.mobile_number}</p>
-      </div>
-      <div className="col-2">
-        <p>{res.reservation_time}</p>
-      </div>
-      <div className="col-2">
-        <p>{res.people}</p>
-      </div>
-      <button className="btn btn-primary btn-sm">
-        <a href={`/reservations/${reservations[i].reservation_id}/seat`}>
-          Seat
-        </a>
-      </button>
-    </div>
+  const reservationContent = reservations.map((reservation, i) => (
+    <>
+      {reservation.status === "finished" ? (
+        ""
+      ) : (
+        <div key={reservation.reservation_id} className="d-flex">
+          <div className="col-2 ">
+            <p>{reservation.first_name}</p>
+          </div>
+          <div className="col-2">
+            <p>{reservation.last_name}</p>
+          </div>
+          <div className="col-2">
+            <p>{reservation.mobile_number}</p>
+          </div>
+          <div className="col-2">
+            <p>{reservation.reservation_time}</p>
+          </div>
+          <div className="col-2">
+            <p>{reservation.people}</p>
+          </div>
+          {reservation.status === "booked" && (
+            <>
+              {" "}
+              <div className="col-2">
+                <p data-reservation-id-status={reservation.reservation_id}>
+                  booked
+                </p>
+              </div>
+              <button className="btn btn-primary btn-sm">
+                <a
+                  href={`/reservations/${reservations[i].reservation_id}/seat`}
+                >
+                  Seat
+                </a>
+              </button>
+            </>
+          )}
+          {reservation.status === "seated" && (
+            <p data-reservation-id-status={reservation.reservation_id}>
+              seated
+            </p>
+          )}
+        </div>
+      )}
+    </>
   ));
 
   return (
@@ -67,6 +90,9 @@ function Reservations({ date }) {
         </div>
         <div className="col-2">
           <h5>Party Size</h5>
+        </div>
+        <div className="col-2">
+          <h5>Status</h5>
         </div>
       </div>
       <div>{reservationContent}</div>

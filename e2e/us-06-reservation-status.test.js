@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const { setDefaultOptions } = require('expect-puppeteer');
+const { setDefaultOptions } = require("expect-puppeteer");
 const fs = require("fs");
 const fsPromises = fs.promises;
 
@@ -19,7 +19,7 @@ describe("US-06 - Reservation status - E2E", () => {
 
   beforeAll(async () => {
     await fsPromises.mkdir("./.screenshots", { recursive: true });
-    setDefaultOptions({ timeout: 1000 });
+    setDefaultOptions({ timeout: 5000 });
     browser = await puppeteer.launch();
   });
 
@@ -60,7 +60,6 @@ describe("US-06 - Reservation status - E2E", () => {
         path: ".screenshots/us-06-dashboard-displays-status.png",
         fullPage: true,
       });
-
       const containsBooked = await containsText(
         page,
         `[data-reservation-id-status="${reservation.reservation_id}"]`,

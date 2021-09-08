@@ -133,10 +133,13 @@ export async function updateStatus(id, status) {
   return data.data;
 }
 
-export async function updateReservation(id, update) {
-  const { data } = await axios.put(
-    `${API_BASE_URL}/reservations/${id}`,
-    update
-  );
-  return data.data;
+export async function updateReservation(id, newStatus, signal) {
+  const url = `${API_BASE_URL}/reservations/${id}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { status: newStatus } }),
+    signal,
+  };
+  return await fetchJson(url, options);
 }

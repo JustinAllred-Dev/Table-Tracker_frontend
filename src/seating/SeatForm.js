@@ -1,8 +1,8 @@
 import React from "react";
 
 function SeatForm({ handleChange, handleSubmit, tables, history }) {
-  const options = tables.map((table, id) => (
-    <option value={table.table_id} key={id}>
+  const options = tables.map((table) => (
+    <option value={table.table_id} key={table.table_id}>
       {`${table.table_name} - ${table.capacity}`}
     </option>
   ));
@@ -14,7 +14,7 @@ function SeatForm({ handleChange, handleSubmit, tables, history }) {
           Table Name:
         </label>
         <select name="table_id" required={true} onChange={handleChange}>
-          <option value=""></option>
+          {/* <option value=""></option> */}
           {options}
         </select>
         <br />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
-import { listTables, clearTable } from "../utils/api";
+import { listTables, clearTable, updateReservation } from "../utils/api";
 
 function Tables() {
   const [tables, setTables] = useState([]);
@@ -21,11 +21,12 @@ function Tables() {
     loadTables();
   }, []);
 
-  const handleFinish = async (tableId) => {
+  const handleFinish = async (table) => {
     if (window.confirm("Is this table ready to seat new guests?")) {
       try {
-        await clearTable(tableId);
+        await clearTable(table.table_id);
         window.location.reload();
+        await updateReservation(table.reservation_id, "finished");
       } catch (err) {
         setTablesError(err);
       }
@@ -49,7 +50,7 @@ function Tables() {
           <button
             className="btn btn-primary btn-sm"
             data-table-id-finish={table.table_id}
-            onClick={() => handleFinish(table.table_id)}
+            onClick={() => handleFinish(table)}
           >
             Finish
           </button>

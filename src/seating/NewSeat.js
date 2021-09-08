@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { updateTable, listTables } from "../utils/api";
+import { updateTable, listTables, updateReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import SeatForm from "./SeatForm";
 
@@ -30,9 +30,10 @@ function NewSeat() {
   }, []);
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      event.preventDefault();
       await updateTable(seatTable.table_id, resId);
+      await updateReservation(resId, "seated");
       history.push("/");
     } catch (err) {
       setSeatTableError(err);
