@@ -144,7 +144,7 @@ export async function updateReservation(id, newStatus, signal) {
   return await fetchJson(url, options);
 }
 
-export async function searchReservationsByNumber(mobile_number, signal) {
-  const url = `${API_BASE_URL}/reservations?mobile_phone=${mobile_number}`;
+export async function listReservationsByNumber(mobile_number, signal) {
+  const url = `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`;
   return await fetchJson(url, signal);
 }

@@ -6,31 +6,31 @@ function Reservations({ date, number }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(
-    () => {
-      const loadReservations = async () => {
-        const abortController = new AbortController();
-        setReservationsError(null);
-        try {
-          if (number) {
-            const loadedReservations = await listReservationsByNumber(number);
-            setReservations(loadedReservations);
-          } else {
-            const loadedReservations = await listReservations(
-              { date },
-              abortController.signal
-            );
-            setReservations(loadedReservations);
-          }
-        } catch (err) {
-          setReservationsError(err);
+  useEffect(() => {
+    const loadReservations = async () => {
+      const abortController = new AbortController();
+      setReservationsError(null);
+      try {
+        if (number) {
+          const loadedReservations = await listReservationsByNumber(
+            number,
+            abortController.signal
+          );
+          setReservations(loadedReservations);
+        } else {
+          const loadedReservations = await listReservations(
+            { date },
+            abortController.signal
+          );
+          setReservations(loadedReservations);
         }
-        return () => abortController.abort();
-      };
-      loadReservations();
-    },
-    !number ? [date] : []
-  );
+      } catch (err) {
+        setReservationsError(err);
+      }
+      return () => abortController.abort();
+    };
+    loadReservations();
+  }, [date, number]);
 
   let reservationsList;
 
@@ -148,7 +148,12 @@ function Reservations({ date, number }) {
           <h5>Status</h5>
         </div>
       </div>
-      <div>{reservationsList}</div>
+      {!reservations.length ? (
+        <ErrorAlert error={{ message: "No reservations found" }} />
+      ) : (
+        <div>{reservationsList}</div>
+      )}
+
       <br></br>
     </>
   );

@@ -36,7 +36,8 @@ function NewReservation() {
   };
 
   return (
-    <>
+    <div classname="reservation">
+      <h5>New Reservation</h5>
       <ReservationForm
         reservation={reservation}
         handleChange={handleChange}
@@ -44,7 +45,7 @@ function NewReservation() {
         history={history}
         reservationError={reservationError}
       />
-    </>
+    </div>
   );
 }
 export default NewReservation;
