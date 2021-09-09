@@ -125,20 +125,23 @@ export async function clearTable(tableId) {
   return await fetchJson(url, options);
 }
 
-export async function updateStatus(id, status) {
-  const { data } = await axios.put(
-    `${API_BASE_URL}/reservations/${id}/status`,
-    status
-  );
-  return data.data;
-}
-
-export async function updateReservation(id, newStatus, signal) {
+export async function updateStatus(id, newStatus, signal) {
   const url = `${API_BASE_URL}/reservations/${id}/status`;
   const options = {
     method: "PUT",
     headers,
     body: JSON.stringify({ data: { status: newStatus } }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}
+
+export async function updateReservation(reservation, Id, signal) {
+  const url = `${API_BASE_URL}/reservations/${Id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: reservation }),
     signal,
   };
   return await fetchJson(url, options);

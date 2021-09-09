@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { updateTable, listTables, updateReservation } from "../utils/api";
+import { updateTable, listTables, updateStatus } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import SeatForm from "./SeatForm";
 
@@ -33,7 +33,7 @@ function NewSeat() {
     event.preventDefault();
     try {
       await updateTable(seatTable.table_id, resId);
-      await updateReservation(resId, "seated");
+      await updateStatus(resId, "seated");
       history.push("/");
     } catch (err) {
       setSeatTableError(err);

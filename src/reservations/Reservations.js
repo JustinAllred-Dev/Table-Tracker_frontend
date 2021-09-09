@@ -4,7 +4,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import {
   listReservations,
   listReservationsByNumber,
-  updateReservation,
+  updateStatus,
 } from "../utils/api";
 import { formatDate, formatTime, formatPhone } from "../utils/date-time";
 
@@ -45,7 +45,7 @@ function Reservations({ date, number }) {
       )
     ) {
       try {
-        await updateReservation(resId, "cancelled");
+        await updateStatus(resId, "cancelled");
         window.location.reload();
       } catch (error) {
         console.error(error);

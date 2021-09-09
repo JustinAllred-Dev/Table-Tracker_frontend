@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
-import { listTables, clearTable, updateReservation } from "../utils/api";
+import { listTables, clearTable, updateStatus } from "../utils/api";
 
 function Tables() {
   const [tables, setTables] = useState([]);
@@ -26,7 +26,7 @@ function Tables() {
       try {
         await clearTable(table.table_id);
         window.location.reload();
-        await updateReservation(table.reservation_id, "finished");
+        await updateStatus(table.reservation_id, "finished");
       } catch (err) {
         setTablesError(err);
       }
