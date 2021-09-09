@@ -45,7 +45,7 @@ function NewSeat() {
   };
 
   return (
-    <div className="main">
+    <div className="seating">
       <h5>Seat Reservation</h5>
       <ErrorAlert error={seatTableError} />
       <ErrorAlert error={tablesError} />

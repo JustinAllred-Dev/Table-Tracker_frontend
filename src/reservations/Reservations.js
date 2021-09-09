@@ -1,76 +1,129 @@
 import { useEffect, useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
-import { listReservations } from "../utils/api";
+import { listReservations, listReservationsByNumber } from "../utils/api";
 
-function Reservations({ date }) {
+function Reservations({ date, number }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  useEffect(() => {
-    const loadReservations = async () => {
-      const abortController = new AbortController();
-      setReservationsError(null);
-      try {
-        const loadedReservations = await listReservations(
-          { date },
-          abortController.signal
-        );
-        setReservations(loadedReservations);
-      } catch (err) {
-        setReservationsError(err);
-      }
-      return () => abortController.abort();
-    };
-    loadReservations();
-  }, [date]);
+  useEffect(
+    () => {
+      const loadReservations = async () => {
+        const abortController = new AbortController();
+        setReservationsError(null);
+        try {
+          if (number) {
+            const loadedReservations = await listReservationsByNumber(number);
+            setReservations(loadedReservations);
+          } else {
+            const loadedReservations = await listReservations(
+              { date },
+              abortController.signal
+            );
+            setReservations(loadedReservations);
+          }
+        } catch (err) {
+          setReservationsError(err);
+        }
+        return () => abortController.abort();
+      };
+      loadReservations();
+    },
+    !number ? [date] : []
+  );
 
-  const reservationContent = reservations.map((reservation, i) => (
-    <>
-      {reservation.status === "finished" ? (
-        ""
-      ) : (
-        <div key={reservation.reservation_id} className="d-flex">
-          <div className="col-2 ">
-            <p>{reservation.first_name}</p>
-          </div>
+  let reservationsList;
+
+  if (number) {
+    reservationsList = reservations.map((reservation, i) => (
+      <div key={reservation.reservation_id} className="d-flex">
+        <div className="col-2 ">
+          <p>{reservation.first_name}</p>
+        </div>
+        <div className="col-2">
+          <p>{reservation.last_name}</p>
+        </div>
+        <div className="col-2">
+          <p>{reservation.mobile_number}</p>
+        </div>
+        <div className="col-2">
+          <p>{reservation.reservation_time}</p>
+        </div>
+        <div className="col-2">
+          <p>{reservation.people}</p>
+        </div>
+        {reservation.status === "booked" && (
           <div className="col-2">
-            <p>{reservation.last_name}</p>
+            <p data-reservation-id-status={reservation.reservation_id}>
+              booked
+            </p>
           </div>
+        )}
+        {reservation.status === "seated" && (
           <div className="col-2">
-            <p>{reservation.mobile_number}</p>
-          </div>
-          <div className="col-2">
-            <p>{reservation.reservation_time}</p>
-          </div>
-          <div className="col-2">
-            <p>{reservation.people}</p>
-          </div>
-          {reservation.status === "booked" && (
-            <>
-              {" "}
-              <div className="col-2">
-                <p data-reservation-id-status={reservation.reservation_id}>
-                  booked
-                </p>
-              </div>
-              <button className="btn btn-primary btn-sm">
-                <a
-                  href={`/reservations/${reservations[i].reservation_id}/seat`}
-                >
-                  Seat
-                </a>
-              </button>
-            </>
-          )}
-          {reservation.status === "seated" && (
             <p data-reservation-id-status={reservation.reservation_id}>
               seated
             </p>
-          )}
-        </div>
-      )}
-    </>
-  ));
+          </div>
+        )}
+        {reservation.status === "finished" && (
+          <div className="col-2">
+            <p data-reservation-id-status={reservation.reservation_id}>
+              finished
+            </p>
+          </div>
+        )}
+      </div>
+    ));
+  } else {
+    reservationsList = reservations.map((reservation, i) => (
+      <>
+        {reservation.status === "finished" ? (
+          ""
+        ) : (
+          <div key={reservation.reservation_id} className="d-flex">
+            <div className="col-2 ">
+              <p>{reservation.first_name}</p>
+            </div>
+            <div className="col-2">
+              <p>{reservation.last_name}</p>
+            </div>
+            <div className="col-2">
+              <p>{reservation.mobile_number}</p>
+            </div>
+            <div className="col-2">
+              <p>{reservation.reservation_time}</p>
+            </div>
+            <div className="col-2">
+              <p>{reservation.people}</p>
+            </div>
+            {reservation.status === "booked" && (
+              <>
+                {" "}
+                <div className="col-2">
+                  <p data-reservation-id-status={reservation.reservation_id}>
+                    booked
+                  </p>
+                </div>
+                <button className="btn btn-primary btn-sm">
+                  <a
+                    href={`/reservations/${reservations[i].reservation_id}/seat`}
+                  >
+                    Seat
+                  </a>
+                </button>
+              </>
+            )}
+            {reservation.status === "seated" && (
+              <p data-reservation-id-status={reservation.reservation_id}>
+                seated
+              </p>
+            )}
+          </div>
+        )}
+      </>
+    ));
+  }
 
   return (
     <>
@@ -95,7 +148,7 @@ function Reservations({ date }) {
           <h5>Status</h5>
         </div>
       </div>
-      <div>{reservationContent}</div>
+      <div>{reservationsList}</div>
       <br></br>
     </>
   );
