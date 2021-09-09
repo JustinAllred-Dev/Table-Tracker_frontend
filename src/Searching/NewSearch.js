@@ -1,11 +1,8 @@
 import { React, useState } from "react";
-import { useHistory } from "react-router-dom";
 import Reservations from "../reservations/Reservations";
 import ErrorAlert from "../layout/ErrorAlert";
 
 function NewSearch() {
-  const history = useHistory();
-
   const [number, setNumber] = useState(null);
   const [numberError, setNumberError] = useState(null);
   const [numberSearch, setNumberSearch] = useState(null);

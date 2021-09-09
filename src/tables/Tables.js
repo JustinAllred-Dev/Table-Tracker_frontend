@@ -35,58 +35,44 @@ function Tables() {
 
   const tableContent = tables.map((table) => (
     <>
-      {/* {console.log(table, table.table_id)} */}
-      {table.reservation_id ? (
-        <div key={table.table_id} className="d-flex">
-          <div className="col-2">
-            <p>{table.table_name}</p>
-          </div>
-          <div className="col-2">
-            <p>{table.capacity}</p>
-          </div>
-          <div className="col-2">
+      <div
+        className="card m-3 bg-light"
+        key={table.table_id}
+        style={{ width: "10rem" }}
+      >
+        <div className="card-body">
+          <h5 className="card-title">Table {table.table_name}</h5>
+          <h6 className="card-subtitle mb-2 text-muted">
+            <span className="oi oi-people m-2"> </span> {table.capacity}
+          </h6>
+          {table.reservation_id ? (
             <h6 data-table-id-status={table.table_id}>occupied</h6>
-          </div>
-          <button
-            className="btn btn-primary btn-sm"
-            data-table-id-finish={table.table_id}
-            onClick={() => handleFinish(table)}
-          >
-            Finish
-          </button>
-        </div>
-      ) : (
-        <div key={table.table_id} className="d-flex">
-          <div className="col-2">
-            <p>{table.table_name}</p>
-          </div>
-          <div className="col-2">
-            <p>{table.capacity}</p>
-          </div>
-          <div className="col-2">
+          ) : (
             <h6 data-table-id-status={table.table_id}>free</h6>
-          </div>
+          )}
+          {table.reservation_id ? (
+            <button
+              data-table-id-finish={table.table_id}
+              onClick={handleFinish}
+            >
+              Finish
+            </button>
+          ) : (
+            ""
+          )}
         </div>
-      )}
+      </div>
     </>
   ));
 
   return (
-    <main>
+    <div className="tablesList">
+      <h3>Tables</h3>
       <ErrorAlert error={tablesError} />
-      <div className="d-flex">
-        <div className="col-2">
-          <h5>Table Name</h5>
-        </div>
-        <div className="col-2">
-          <h5>Capacity</h5>
-        </div>
-        <div className="col-2">
-          <h5>occupied</h5>
-        </div>
+      <div className="d-flex justify-content-center flex-wrap">
+        <>{tableContent}</>
       </div>
-      <div>{tableContent}</div>
-    </main>
+    </div>
   );
 }
 

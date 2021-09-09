@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
-import NewReservation from "../reservations/NewReservation";
+import EditOrCreateReservation from "../reservations/EditOrCreateReservation";
 import NewTable from "../tables/NewTable";
 import NewSeat from "../seating/NewSeat";
 import NewSearch from "../Searching/NewSearch";
@@ -28,7 +28,7 @@ function Routes() {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/reservations/new">
-        <NewReservation />
+        <EditOrCreateReservation />
       </Route>
       <Route path="/reservations/:reservation_id/seat">
         <NewSeat />

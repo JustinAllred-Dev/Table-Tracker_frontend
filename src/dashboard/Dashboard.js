@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { today, next, previous } from "../utils/date-time";
+import { today, next, previous, formatDate } from "../utils/date-time";
 import Tables from "../tables/Tables";
 import Reservations from "../reservations/Reservations";
 
@@ -25,34 +25,50 @@ function Dashboard({ date }) {
     history.push(`dashboard?date=${today(date)}`);
   };
 
+  const handleDateChange = (event) => {
+    try {
+      history.push(`dashboard?date=${event.target.value}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date: {date}</h4>
-      </div>
-      <div className="mb-3">
-        <button
-          className="btn btn-secondary mr-2"
-          onClick={() => handlePreviousDate(date)}
-        >
-          previous
-        </button>
-        <button
-          className="btn btn-secondary mr-2"
-          onClick={() => handleNextDate(date)}
-        >
-          next
-        </button>
-        <button
-          className="btn btn-secondary"
-          onClick={() => handleTodayClick()}
-        >
-          today
-        </button>
-      </div>
-      <Reservations date={date} />
+    <main className="text-center">
+      <h1 className="m-3">{formatDate(date)}</h1>
+
+      {/* <div className="mb-3"> */}
+      <button
+        className="btn btn-sm btn-light"
+        onClick={() => handlePreviousDate(date)}
+      >
+        Previous Day
+      </button>
+      <button
+        className="mx-3 btn btn-sm btn-light"
+        onClick={() => handleTodayClick()}
+      >
+        Today
+      </button>
+      <button
+        className="btn btn-sm btn-light"
+        onClick={() => handleNextDate(date)}
+      >
+        Next Day
+      </button>
+      <br />
+      <label htmlFor="reservation_date" className="form-label m-3"></label>
+      <input
+        type="date"
+        pattern="\d{4}-\d{2}-\d{2}"
+        name="reservation_date"
+        onChange={handleDateChange}
+        value={date}
+      />
+      {/* </div> */}
       <Tables />
+
+      <Reservations date={date} />
     </main>
   );
 }

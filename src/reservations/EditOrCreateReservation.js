@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
 import ReservationForm from "./ReservationForm";
 
-function NewReservation() {
+function EditOrCreateReservation() {
   const history = useHistory();
   const [reservationError, setReservationError] = useState(null);
   const [reservation, setReservation] = useState({
@@ -48,4 +48,4 @@ function NewReservation() {
     </div>
   );
 }
-export default NewReservation;
+export default EditOrCreateReservation;
