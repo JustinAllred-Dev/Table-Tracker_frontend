@@ -14,7 +14,7 @@ function SeatForm({ handleChange, handleSubmit, tables, history }) {
           Table Name:
         </label>
         <select name="table_id" required={true} onChange={handleChange}>
-          {/* <option value=""></option> */}
+          <option value=""></option>
           {options}
         </select>
         <br />

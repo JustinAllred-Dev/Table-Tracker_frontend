@@ -36,8 +36,6 @@ function Dashboard({ date }) {
   return (
     <main className="text-center">
       <h1 className="m-3">{formatDate(date)}</h1>
-
-      {/* <div className="mb-3"> */}
       <button
         className="btn btn-sm btn-light"
         onClick={() => handlePreviousDate(date)}
@@ -65,9 +63,7 @@ function Dashboard({ date }) {
         onChange={handleDateChange}
         value={date}
       />
-      {/* </div> */}
       <Tables />
-
       <Reservations date={date} />
     </main>
   );
